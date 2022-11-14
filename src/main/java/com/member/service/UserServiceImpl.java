@@ -22,15 +22,16 @@ public class UserServiceImpl implements UserService{
    @Override
     public User saveUser(User user) {
 	// TODO Auto-generated method stub
+	   if(user.getUserName()!=null)
 	   user.setPassword(passwordEncoder.encode(user.getPassword()));
 	   System.out.println("Creating user..."+user.getUserName());
 	return userRepo.save(user);
 }
 
 
-@Override
-public Optional<User> findByUsername(String username) {
+   @Override
+   public Optional<User> findByUsername(String username) {
 	// TODO Auto-generated method stub
 	return userRepo.findByUserName(username);
-}
+   }
 }
