@@ -36,6 +36,7 @@ public class AdminServiceImpl implements AdminService {
 		
 	    List<Physician> list =	physicianRepo.findAll();
 		
+	  
 	    User user = new User();
 	   
 	    user.setUserName(member.getUsername());
@@ -43,7 +44,7 @@ public class AdminServiceImpl implements AdminService {
 	    user.setRole(Role.MEMBER);
 	    
 	    userserv.saveUser(user);
-	    
+	 
 	    member.setPhysician_id(1 + (int)(Math.random() * ((list.size() - 1) + 1)));
 	    member.setCreatedTime(LocalDateTime.now());
 	    member.setModification_date(LocalDateTime.now());
@@ -64,6 +65,13 @@ public class AdminServiceImpl implements AdminService {
 	public Optional<Member> findMemberById(Long id) {
 		// TODO Auto-generated method stub
 		return adminRepo.findById(id);
+	}
+
+
+	@Override
+	public List<Member> getAllMembers() {
+		// TODO Auto-generated method stub
+		return adminRepo.findAll();
 	}
 
 }

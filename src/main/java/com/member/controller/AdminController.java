@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.member.entity.Member;
 import com.member.entity.Physician;
@@ -28,24 +29,9 @@ public class AdminController {
 	@Autowired
 	private PhysicianService physicianServ;
 	
-	//only admin can access this api , have to pass token also
-	@GetMapping("/test")
-	public String greetings() {
-		return "Hello Admin!";
-	}
+	@Autowired
+	private RestTemplate restTemplate;
 	
-	//add member
-	
-	@PostMapping("/create")
-	public ResponseEntity<Member> saveMember(@RequestBody Member member) {
-		if (adminServ.findByUsername(member.getUsername()).isPresent())
-        {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-            //we will use this code to show alert for already exists errorcode409
-        }
-        return new ResponseEntity<>(adminServ.saveMember(member), HttpStatus.CREATED);
-		
-	}
 	
 	//fetch member details
 	@GetMapping("/member/{id}")
@@ -59,6 +45,13 @@ public class AdminController {
 	public List<Physician> fetchAllPhysicians(){
 		return physicianServ.fetchAllPhysicians();
 	}
+	
+	//getAllMembers
+	@GetMapping("/members")
+	public List<Member> getAllMembers(){
+		return adminServ.getAllMembers();
+	}
+	
 	//fetch member by phyisician details
 	
 	
@@ -66,5 +59,17 @@ public class AdminController {
 	
 	//fetch claim details
 	
+	//add member
 	
+		/*
+		 * @PostMapping("/create") public ResponseEntity<Member> saveMember(@RequestBody
+		 * Member member) { if
+		 * (adminServ.findByUsername(member.getUsername()).isPresent()) { return new
+		 * ResponseEntity<>(HttpStatus.CONFLICT); //we will use this code to show alert
+		 * for already exists errorcode409 } return new
+		 * ResponseEntity<>(adminServ.saveMember(member), HttpStatus.CREATED);
+		 * 
+		 * }
+		 */
+		
 }

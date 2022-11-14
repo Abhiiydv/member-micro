@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.member.entity.Member;
 import com.member.service.MemberService;
@@ -22,23 +23,20 @@ public class MemberController {
 	@Autowired
 	private MemberService memberServ;
 	
-	@GetMapping("/test")
-	public String greetings() {
-		return "Hello, I am member";
-	}
+	@Autowired
+	private RestTemplate restTemplate;
+	
 	//save member details
-	
-	@PostMapping("/create")
-	public ResponseEntity<Member> saveMemberDetails(@RequestBody Member member) {
-		if (memberServ.findByUsername(member.getUsername()).isPresent())
-        {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-            //we will use this code to show alert for already exists errorcode409
-        }
-        return new ResponseEntity<>(memberServ.saveMemberDetails(member), HttpStatus.CREATED);
-		
-	}
-	
+	/*
+	 * @PostMapping("/create") public ResponseEntity<Member>
+	 * saveMemberDetails(@RequestBody Member member) { if
+	 * (memberServ.findByUsername(member.getUsername()).isPresent()) { return new
+	 * ResponseEntity<>(HttpStatus.CONFLICT); //we will use this code to show alert
+	 * for already exists errorcode409 } return new
+	 * ResponseEntity<>(memberServ.saveMemberDetails(member), HttpStatus.CREATED);
+	 * 
+	 * }
+	 */
 	@GetMapping("/details/{username}")
 	public Optional<Member> findMemberByUsername(@PathVariable String username)
 	{

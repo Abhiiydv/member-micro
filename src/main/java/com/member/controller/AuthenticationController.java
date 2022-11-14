@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
+import com.member.entity.Claim;
 import com.member.entity.Member;
 import com.member.entity.Physician;
 import com.member.entity.User;
@@ -42,22 +44,22 @@ public class AuthenticationController {
 	@Autowired
 	private PhysicianService physicianServ;
 	
-	@PostMapping("/sign-up")
-    public ResponseEntity<?>signUp(@RequestBody User user)
-    {
-		if(userService.findByUsername(user.getUserName()).isPresent()) {
-			return new ResponseEntity<>(HttpStatus.CONFLICT);		}
-		return new ResponseEntity<>(userService.saveUser(user),HttpStatus.CREATED);
-	}
+	@Autowired
+	private RestTemplate restTemplate;
 	
 	@PostMapping("/sign-up-member")
 	public ResponseEntity<?>signUp(@RequestBody Member member)
 	{
+		String Username = member.getUsername();
 		if (adminServ.findByUsername(member.getUsername()).isPresent())
         {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
             //we will use this code to show alert for already exists errorcode409
         }
+		else if(Username=="") {
+			//406 if username is blank
+			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+		}
         return new ResponseEntity<>(adminServ.saveMember(member), HttpStatus.CREATED);
 		
 	}
@@ -73,5 +75,21 @@ public class AuthenticationController {
 		return physicianServ.fetchAllPhysicians();
 	}
 	
+	/*
+	 * @PostMapping("/submit") public Integer submitClaim(@RequestBody Claim claim)
+	 * {
+	 * 
+	 * Integer id = restTemplate.postForEntity("http://claim-service/submit/",
+	 * claim, null, null); return id;
+	 * 
+	 * }
+	 */
+	
+	/*
+	 * @PostMapping("/sign-up") public ResponseEntity<?>signUp(@RequestBody User
+	 * user) { if(userService.findByUsername(user.getUserName()).isPresent()) {
+	 * return new ResponseEntity<>(HttpStatus.CONFLICT); } return new
+	 * ResponseEntity<>(userService.saveUser(user),HttpStatus.CREATED); }
+	 */
 	
 }

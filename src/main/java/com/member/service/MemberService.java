@@ -6,7 +6,7 @@ import com.member.entity.Member;
 
 public interface MemberService {
 
-    Member saveMemberDetails(Member member);
+   // Member saveMemberDetails(Member member);
 	
 	Optional<Member> findByUsername(String userName);
 	
