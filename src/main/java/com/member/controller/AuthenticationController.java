@@ -1,5 +1,6 @@
 package com.member.controller;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.member.entity.Claim;
 import com.member.entity.Member;
 import com.member.entity.Physician;
@@ -75,15 +79,32 @@ public class AuthenticationController {
 		return physicianServ.fetchAllPhysicians();
 	}
 	
+	
 	/*
-	 * @PostMapping("/submit") public Integer submitClaim(@RequestBody Claim claim)
-	 * {
+	 * @PostMapping("/submit") public Object submitClaim(@RequestBody Claim claim){
 	 * 
-	 * Integer id = restTemplate.postForEntity("http://claim-service/submit/",
-	 * claim, null, null); return id;
+	 * RestTemplate restTemplate = new RestTemplate(); Claim c =
+	 * restTemplate.postForObject("http://claim-service//submit/",claim, Claim.class
+	 * );
+	 * 
+	 * return c;
 	 * 
 	 * }
 	 */
+	  
+	  @PostMapping("/submit") 
+	  public Integer submitClaim(@RequestBody Claim claim)throws Exception {		
+			Claim obj = (Claim) restTemplate.postForObject( "http://claim-service//submit/",claim,Claim.class);
+		
+	        return obj.getClaim_id();
+	  }
+	  
+	//api/authentication/refresh-token?token=
+	  @PostMapping("refresh-token")
+	    public ResponseEntity<?> refreshToken(@RequestParam String token)
+	    {
+	        return ResponseEntity.ok(jwtRefreshTokenService.generateAccessTokenFromRefreshToken(token));
+	    }
 	
 	/*
 	 * @PostMapping("/sign-up") public ResponseEntity<?>signUp(@RequestBody User

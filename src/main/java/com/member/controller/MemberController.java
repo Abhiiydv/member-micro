@@ -45,7 +45,16 @@ public class MemberController {
 	}
 	//submit claim
 	
-	//fetch claim
+	
+	
+	//fetch claim for memberID
+	 @GetMapping("/claim/member/{id}")
+	 public Object getClaim(@PathVariable Integer id) {
+	
+		
+		  Object r = restTemplate.getForObject("http://claim-service//claim/member/"+id, Object.class );
+		  return r;
+	 }
 	
 	//fetch member details
 	

@@ -15,12 +15,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 @Data
-@Entity
-@Table(name="claim_tbl")
 public class Claim {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer claim_id;
 	
 	private long memberId;
@@ -28,7 +24,6 @@ public class Claim {
 	private long ammount;
 	
 	private String remarks;
-	
 	
 	private LocalDate claimDate;
 	
