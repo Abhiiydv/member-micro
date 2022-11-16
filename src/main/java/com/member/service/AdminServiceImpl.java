@@ -3,6 +3,7 @@ package com.member.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -73,5 +74,31 @@ public class AdminServiceImpl implements AdminService {
 		// TODO Auto-generated method stub
 		return adminRepo.findAll();
 	}
+
+
+	@Override
+	public List<Member> getAllMembersByPhysicianId(Integer pId) {
+		// TODO Auto-generated method stub
+	
+		List<Member> list = adminRepo.findAll().stream().filter(m-> m.getPhysician_id()==pId).collect(Collectors.toList());
+	
+		return list;
+	}
+	
+	@Override
+	public List<Member> findMembersbyFirstLastname(String first_name, String last_name) {
+		// TODO Auto-generated method stub
+		return adminRepo.findMembersbyFirstLastname(first_name,last_name );
+	}
+	/*
+	 * @Override public List<Member> findMembersByPhysicianName(String pName) { //
+	 * TODO Auto-generated method stub Optional<Physician> p =
+	 * physicianRepo.findByName(pName);
+	 * 
+	 * List<Member> list = adminRepo.findAll().stream().filter(m->
+	 * m.getPhysician_id()==p.get().getPhysician_id()).collect(Collectors.toList());
+	 * 
+	 * return list; }
+	 */
 
 }
