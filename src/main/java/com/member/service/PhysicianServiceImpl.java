@@ -14,16 +14,16 @@ public class PhysicianServiceImpl implements PhysicianService {
 
 	@Autowired
 	private Physician_Repository physicianRepo;
-	
+
 	@Override
 	public List<Physician> fetchAllPhysicians() {
 		// TODO Auto-generated method stub
 		return physicianRepo.findAll();
 	}
-	
-	 @Override 
+
+	@Override
 	public Optional<Physician> findByName(String name) { // TODO
-	return physicianRepo.findByName(name); }
-	 
+		return physicianRepo.findByName(name);
+	}
 
 }

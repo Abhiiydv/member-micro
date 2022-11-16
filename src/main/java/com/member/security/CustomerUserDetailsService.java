@@ -14,27 +14,21 @@ import com.member.service.UserService;
 import com.member.utils.SecurityUtils;
 
 @Service
-public class CustomerUserDetailsService implements UserDetailsService{
+public class CustomerUserDetailsService implements UserDetailsService {
 
 	@Autowired
 	private UserService userService;
-	
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
-		User user = userService.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("User not found with username: "+ username));
-		
-		 Set<GrantedAuthority> authorities = Set.of(SecurityUtils.convertToAuthority(user.getRole().name()));
+		User user = userService.findByUsername(username)
+				.orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
-	        return UserPrincipal.builder()
-	                .user(user)
-	                .id(user.getId())
-	                .username(user.getUserName())
-	                .password(user.getPassword())
-	                .authorities(authorities)
-	                .build();
-	    }
-		
+		Set<GrantedAuthority> authorities = Set.of(SecurityUtils.convertToAuthority(user.getRole().name()));
+
+		return UserPrincipal.builder().user(user).id(user.getId()).username(user.getUserName())
+				.password(user.getPassword()).authorities(authorities).build();
+	}
 
 }

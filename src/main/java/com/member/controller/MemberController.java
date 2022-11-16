@@ -22,11 +22,11 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberServ;
-	
+
 	@Autowired
 	private RestTemplate restTemplate;
-	
-	//save member details
+
+	// save member details
 	/*
 	 * @PostMapping("/create") public ResponseEntity<Member>
 	 * saveMemberDetails(@RequestBody Member member) { if
@@ -38,24 +38,20 @@ public class MemberController {
 	 * }
 	 */
 	@GetMapping("/details/{username}")
-	public Optional<Member> findMemberByUsername(@PathVariable String username)
-	{
+	public Optional<Member> findMemberByUsername(@PathVariable String username) {
 		return memberServ.findByUsername(username);
-		
+
 	}
-	//submit claim
-	
-	
-	
-	//fetch claim for memberID
-	 @GetMapping("/claim/member/{id}")
-	 public Object getClaim(@PathVariable Integer id) {
-	
-		
-		  Object r = restTemplate.getForObject("http://claim-service//claim/member/"+id, Object.class );
-		  return r;
-	 }
-	
-	//fetch member details
-	
+	// submit claim
+
+	// fetch claim for memberID
+	@GetMapping("/claim/member/{id}")
+	public Object getClaim(@PathVariable Integer id) {
+
+		Object r = restTemplate.getForObject("http://claim-service//claim/member/" + id, Object.class);
+		return r;
+	}
+
+	// fetch member details
+
 }

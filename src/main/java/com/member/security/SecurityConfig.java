@@ -21,59 +21,52 @@ import com.member.entity.Role;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private CustomerUserDetailsService customUserDetailsService;
-	
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		// TODO Auto-generated method stub
 		auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
 	}
-	
+
 	@Override
-    protected void configure(HttpSecurity http) throws Exception
-    {
-        http.cors();//cross-origin-resource-sharing
-        http.csrf().disable();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+	protected void configure(HttpSecurity http) throws Exception {
+		http.cors();// cross-origin-resource-sharing
+		http.csrf().disable();
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.authorizeRequests()
-                .antMatchers("/api/authentication/**").permitAll()//login and register pre-path
-                .antMatchers("/api/admin/**").hasRole(Role.ADMIN.name())
-                .anyRequest().authenticated();
+		http.authorizeRequests().antMatchers("/api/authentication/**").permitAll()// login and register pre-path
+				.antMatchers("/api/admin/**").hasRole(Role.ADMIN.name()).anyRequest().authenticated();
 
-        http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
-    }
+		http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+	}
 
-	    @Override
-	    @Bean(BeanIds.AUTHENTICATION_MANAGER)
-	    public AuthenticationManager authenticationManagerBean() throws Exception
-	    {
-	        return super.authenticationManagerBean();
-	    }
-	 @Bean
-	    public JwtAuthorizationFilter jwtAuthorizationFilter()
-	    {
-	        return new JwtAuthorizationFilter();
-	    }
+	@Override
+	@Bean(BeanIds.AUTHENTICATION_MANAGER)
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
+
+	@Bean
+	public JwtAuthorizationFilter jwtAuthorizationFilter() {
+		return new JwtAuthorizationFilter();
+	}
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	 @Bean
-	    public WebMvcConfigurer corsConfigurer()
-	    {
-	        return new WebMvcConfigurer()
-	        {
-	            @Override
-	            public void addCorsMappings(CorsRegistry registry)
-	            {
-	                registry.addMapping("/**")
-	                        .allowedOrigins("*")
-	                        .allowedMethods("*");
-	            }
-	        };
-	    }
+
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**").allowedOrigins("*").allowedMethods("*");
+			}
+		};
+	}
 }

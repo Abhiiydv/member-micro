@@ -1,6 +1,5 @@
 package com.member.controller;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,57 +28,53 @@ import com.member.service.PhysicianService;
 import com.member.service.UserService;
 
 @RestController
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/authentication")
 public class AuthenticationController {
 
 	@Autowired
 	private AuthenticationService authenticationService;
-	
+
 	@Autowired
 	private JwtRefreshTokenService jwtRefreshTokenService;
-	
+
 	@Autowired
 	private AdminService adminServ;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private PhysicianService physicianServ;
-	
+
 	@Autowired
 	private RestTemplate restTemplate;
-	
+
 	@PostMapping("/sign-up-member")
-	public ResponseEntity<?>signUp(@RequestBody Member member)
-	{
+	public ResponseEntity<?> signUp(@RequestBody Member member) {
 		String Username = member.getUsername();
-		if (adminServ.findByUsername(member.getUsername()).isPresent())
-        {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-            //we will use this code to show alert for already exists errorcode409
-        }
-		else if(Username=="") {
-			//406 if username is blank
+		if (adminServ.findByUsername(member.getUsername()).isPresent()) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+			// we will use this code to show alert for already exists errorcode409
+		} else if (Username == "") {
+			// 406 if username is blank
 			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 		}
-        return new ResponseEntity<>(adminServ.saveMember(member), HttpStatus.CREATED);
-		
+		return new ResponseEntity<>(adminServ.saveMember(member), HttpStatus.CREATED);
+
 	}
-	
+
 	@PostMapping("sign-in")
-	public ResponseEntity<?> signIn(@RequestBody User user){
+	public ResponseEntity<?> signIn(@RequestBody User user) {
 		System.out.println("Inside signIn controller");
-		return new ResponseEntity<>(authenticationService.signInAndReturnJWT(user),HttpStatus.OK);
+		return new ResponseEntity<>(authenticationService.signInAndReturnJWT(user), HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/physicians")
-	public List<Physician> fetchAllPhysicians(){
+	public List<Physician> fetchAllPhysicians() {
 		return physicianServ.fetchAllPhysicians();
 	}
-	
-	
+
 	/*
 	 * @PostMapping("/submit") public Object submitClaim(@RequestBody Claim claim){
 	 * 
@@ -91,26 +86,25 @@ public class AuthenticationController {
 	 * 
 	 * }
 	 */
-	  
-	  @PostMapping("/submit") 
-	  public Integer submitClaim(@RequestBody Claim claim)throws Exception {		
-			Claim obj = (Claim) restTemplate.postForObject( "http://claim-service//submit/",claim,Claim.class);
-		
-	        return obj.getClaim_id();
-	  }
-	  
-	//api/authentication/refresh-token?token=
-	  @PostMapping("refresh-token")
-	    public ResponseEntity<?> refreshToken(@RequestParam String token)
-	    {
-	        return ResponseEntity.ok(jwtRefreshTokenService.generateAccessTokenFromRefreshToken(token));
-	    }
-	
+
+	@PostMapping("/submit")
+	public Integer submitClaim(@RequestBody Claim claim) throws Exception {
+		Claim obj = (Claim) restTemplate.postForObject("http://claim-service//submit/", claim, Claim.class);
+
+		return obj.getClaim_id();
+	}
+
+	// api/authentication/refresh-token?token=
+	@PostMapping("refresh-token")
+	public ResponseEntity<?> refreshToken(@RequestParam String token) {
+		return ResponseEntity.ok(jwtRefreshTokenService.generateAccessTokenFromRefreshToken(token));
+	}
+
 	/*
 	 * @PostMapping("/sign-up") public ResponseEntity<?>signUp(@RequestBody User
 	 * user) { if(userService.findByUsername(user.getUserName()).isPresent()) {
 	 * return new ResponseEntity<>(HttpStatus.CONFLICT); } return new
 	 * ResponseEntity<>(userService.saveUser(user),HttpStatus.CREATED); }
 	 */
-	
+
 }

@@ -8,16 +8,16 @@ import com.member.entity.Member;
 public interface AdminService {
 
 	Member saveMember(Member member);
-	
+
 	List<Member> getAllMembers();
-	
+
 	Optional<Member> findByUsername(String userName);
-	
+
 	Optional<Member> findMemberById(Long id);
-	
+
 	List<Member> getAllMembersByPhysicianId(Integer pId);
-	
+
 	List<Member> findMembersbyFirstLastname(String first_name, String last_name);
-	
-	//List<Member> findMembersByPhysicianName(String pName);
+
+	// List<Member> findMembersByPhysicianName(String pName);
 }

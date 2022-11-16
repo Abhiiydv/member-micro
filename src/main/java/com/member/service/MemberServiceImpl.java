@@ -13,14 +13,14 @@ import com.member.repository.MemberRepository;
 import com.member.repository.Physician_Repository;
 
 @Service
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	private MemberRepository memberRepo;
-	
+
 	@Autowired
 	private Physician_Repository physicianRepo;
-	
+
 	/*
 	 * @Override public Member saveMemberDetails(Member member) { // TODO
 	 * Auto-generated method stub List<Physician> list = physicianRepo.findAll();

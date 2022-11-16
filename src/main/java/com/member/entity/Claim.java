@@ -16,17 +16,17 @@ import lombok.Data;
 
 @Data
 public class Claim {
-	
+
 	private Integer claim_id;
-	
+
 	private long memberId;
-	
+
 	private long ammount;
-	
+
 	private String remarks;
-	
+
 	private LocalDate claimDate;
-	
+
 	@Enumerated(EnumType.STRING)
 	private ClaimType claimType;
 
