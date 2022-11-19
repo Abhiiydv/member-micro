@@ -50,14 +50,22 @@ public class AuthenticationController {
 	@Autowired
 	private RestTemplate restTemplate;
 
+
 	@PostMapping("/sign-up-member")
 	public ResponseEntity<?> signUp(@RequestBody Member member) {
 		String Username = member.getUsername();
+		
+		String pass = member.getPassword();
+		String cpass= member.getConfirm_password();
+		
 		if (adminServ.findByUsername(member.getUsername()).isPresent()) {
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 			// we will use this code to show alert for already exists errorcode409
 		} else if (Username == "") {
 			// 406 if username is blank
+			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+		}
+		else if(!(pass.equals(cpass))) {
 			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
 		}
 		return new ResponseEntity<>(adminServ.saveMember(member), HttpStatus.CREATED);
@@ -75,17 +83,6 @@ public class AuthenticationController {
 		return physicianServ.fetchAllPhysicians();
 	}
 
-	/*
-	 * @PostMapping("/submit") public Object submitClaim(@RequestBody Claim claim){
-	 * 
-	 * RestTemplate restTemplate = new RestTemplate(); Claim c =
-	 * restTemplate.postForObject("http://claim-service//submit/",claim, Claim.class
-	 * );
-	 * 
-	 * return c;
-	 * 
-	 * }
-	 */
 
 	@PostMapping("/submit")
 	public Integer submitClaim(@RequestBody Claim claim) throws Exception {

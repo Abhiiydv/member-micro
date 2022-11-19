@@ -16,10 +16,14 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "members")
 public class Member {
 
@@ -61,5 +65,9 @@ public class Member {
 	private LocalDateTime createdTime;
 	
 	private LocalDateTime modification_date;
+
+
+	
+	
 	
 }

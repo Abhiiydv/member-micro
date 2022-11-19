@@ -34,7 +34,7 @@ public class AdminServiceImpl implements AdminService {
 	public Member saveMember(Member member) {
 		// TODO Auto-generated method stub
 		// member.setPassword(passwordEncoder.encode(member.getPassword()));
-
+		System.out.println("adminservice"+member);
 		List<Physician> list = physicianRepo.findAll();
 
 		User user = new User();

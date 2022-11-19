@@ -39,8 +39,10 @@ public class AdminController {
 	// fetch member details
 	@GetMapping("/member/{id}")
 	public Optional<Member> getDetailsOfMember(@PathVariable Long id) {
-		System.out.println("Fetching Member for Id :" + id);
-		return adminServ.findMemberById(id);
+		
+			System.out.println("Fetching Member for Id :" + id);
+		
+		    return adminServ.findMemberById(id);
 
 	}
 
@@ -72,6 +74,8 @@ public class AdminController {
 	// fetch member by phyisician details
 	@PostMapping("/search")
 	public List<Member> getMembers(@RequestBody SearchModel searchobj) {
+		System.out.println("fetching memebr for searchobj");
+		System.out.println(searchobj);
 		List<Member> list = new ArrayList<Member>();
 
 		if (searchobj.getMemberId() != null) {
@@ -85,6 +89,7 @@ public class AdminController {
 
 		else if (searchobj.getFirst_name() != null && searchobj.getLast_name() != null) {
 			list = adminServ.findMembersbyFirstLastname(searchobj.getFirst_name(), searchobj.getLast_name());
+			System.out.println(list);
 		}
 
 		else if (searchobj.getPhysician_name() != null) {
@@ -94,6 +99,7 @@ public class AdminController {
 				list = adminServ.getAllMembers().stream().filter(m -> m.getPhysician_id() == p.get().getPhysician_id())
 						.collect(Collectors.toList());
 			}
+			System.out.println(list);
 			return list;
 
 		}
@@ -102,7 +108,7 @@ public class AdminController {
 			Claim c = restTemplate.getForObject("http://claim-service//claim/" + searchobj.getClaimId(), Claim.class);
 
 			Optional<Member> m = adminServ.findMemberById(c.getMemberId());
-
+			System.out.println(m);
 			if (m.isPresent()) {
 				list.add(m.get());
 			}
@@ -115,7 +121,7 @@ public class AdminController {
 		return list;
 
 	}
-	// submit claim
+	
 
 	// fetch claim by claim id
 	@GetMapping("/claim/{claimid}")
@@ -135,17 +141,6 @@ public class AdminController {
 
 		return m;
 	}
-	// add member
 
-	/*
-	 * @PostMapping("/create") public ResponseEntity<Member> saveMember(@RequestBody
-	 * Member member) { if
-	 * (adminServ.findByUsername(member.getUsername()).isPresent()) { return new
-	 * ResponseEntity<>(HttpStatus.CONFLICT); //we will use this code to show alert
-	 * for already exists errorcode409 } return new
-	 * ResponseEntity<>(adminServ.saveMember(member), HttpStatus.CREATED);
-	 * 
-	 * }
-	 */
 
 }

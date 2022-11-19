@@ -26,24 +26,12 @@ public class MemberController {
 	@Autowired
 	private RestTemplate restTemplate;
 
-	// save member details
-	/*
-	 * @PostMapping("/create") public ResponseEntity<Member>
-	 * saveMemberDetails(@RequestBody Member member) { if
-	 * (memberServ.findByUsername(member.getUsername()).isPresent()) { return new
-	 * ResponseEntity<>(HttpStatus.CONFLICT); //we will use this code to show alert
-	 * for already exists errorcode409 } return new
-	 * ResponseEntity<>(memberServ.saveMemberDetails(member), HttpStatus.CREATED);
-	 * 
-	 * }
-	 */
 	@GetMapping("/details/{username}")
 	public Optional<Member> findMemberByUsername(@PathVariable String username) {
 		return memberServ.findByUsername(username);
 
 	}
-	// submit claim
-
+	
 	// fetch claim for memberID
 	@GetMapping("/claim/member/{id}")
 	public Object getClaim(@PathVariable Integer id) {
@@ -52,6 +40,5 @@ public class MemberController {
 		return r;
 	}
 
-	// fetch member details
 
 }
