@@ -14,5 +14,10 @@ public interface AdminRepository extends JpaRepository<Member, Long>{
 	
 	
 	@Query(value = "SELECT * FROM members where first_name = ?1 AND last_name = ?2", nativeQuery = true)
-	List<Member> findMembersbyFirstLastname(String first_name, String last_name);
+	List<Member> findMembersbyFirstLastname(String first_name, String last_name );
+	
+	@Query(value = "SELECT * FROM members where email = ?1", nativeQuery = true)
+	Member findByEmail(String email);
+	
+	boolean existsByEmail(String email);
 }

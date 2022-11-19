@@ -96,5 +96,24 @@ public class AdminServiceImpl implements AdminService {
 	 * 
 	 * return list; }
 	 */
+	@Override
+	public Optional<Member> findMemberByEmail(String email) {
+		// TODO Auto-generated method stub
+		Member m = adminRepo.findByEmail(email);
+		return Optional.ofNullable(m);
+	}
+
+	@Override
+	public Boolean ifExistsingMember(String email) {
+		// TODO Auto-generated method stub
+		Member m = adminRepo.findByEmail(email);
+		if(m!=null) {
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 
 }

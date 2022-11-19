@@ -50,23 +50,28 @@ public class AuthenticationController {
 	@Autowired
 	private RestTemplate restTemplate;
 
-
 	@PostMapping("/sign-up-member")
 	public ResponseEntity<?> signUp(@RequestBody Member member) {
+
 		String Username = member.getUsername();
-		
+		String firstname = member.getFirst_name();
+		String lastname = member.getLast_name();
 		String pass = member.getPassword();
-		String cpass= member.getConfirm_password();
-		
-		if (adminServ.findByUsername(member.getUsername()).isPresent()) {
+		String cpass = member.getConfirm_password();
+		String email = member.getEmail();
+
+		if (adminServ.findByUsername(member.getUsername()).isPresent() || adminServ.ifExistsingMember(email) == true) {
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 			// we will use this code to show alert for already exists errorcode409
 		} else if (Username == "") {
 			// 406 if username is blank
 			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-		}
-		else if(!(pass.equals(cpass))) {
+		} else if (!(pass.equals(cpass))) {
 			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+		} else if (firstname.length() < 5 || lastname.length() < 5) {
+			return new ResponseEntity<>(HttpStatus.LENGTH_REQUIRED);
+		} else if (firstname.length() > 20 || lastname.length() > 20) {
+			return new ResponseEntity<>(HttpStatus.LENGTH_REQUIRED);
 		}
 		return new ResponseEntity<>(adminServ.saveMember(member), HttpStatus.CREATED);
 
@@ -82,7 +87,6 @@ public class AuthenticationController {
 	public List<Physician> fetchAllPhysicians() {
 		return physicianServ.fetchAllPhysicians();
 	}
-
 
 	@PostMapping("/submit")
 	public Integer submitClaim(@RequestBody Claim claim) throws Exception {

@@ -19,5 +19,9 @@ public interface AdminService {
 
 	List<Member> findMembersbyFirstLastname(String first_name, String last_name);
 
+    Optional<Member> findMemberByEmail(String email);
+	
+	Boolean ifExistsingMember(String email);
+	
 	// List<Member> findMembersByPhysicianName(String pName);
 }
