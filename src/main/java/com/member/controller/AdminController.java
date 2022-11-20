@@ -39,10 +39,8 @@ public class AdminController {
 	// fetch member details
 	@GetMapping("/member/{id}")
 	public Optional<Member> getDetailsOfMember(@PathVariable Long id) {
-		
-			System.out.println("Fetching Member for Id :" + id);
-		
-		    return adminServ.findMemberById(id);
+
+		return adminServ.findMemberById(id);
 
 	}
 
@@ -74,8 +72,7 @@ public class AdminController {
 	// fetch member by phyisician details
 	@PostMapping("/search")
 	public List<Member> getMembers(@RequestBody SearchModel searchobj) {
-		System.out.println("fetching memebr for searchobj");
-		System.out.println(searchobj);
+
 		List<Member> list = new ArrayList<Member>();
 
 		if (searchobj.getMemberId() != null) {
@@ -83,13 +80,12 @@ public class AdminController {
 			if (result.isPresent()) {
 				list.add(result.get());
 			}
-			System.out.println(result);
 
 		}
 
 		else if (searchobj.getFirst_name() != null && searchobj.getLast_name() != null) {
 			list = adminServ.findMembersbyFirstLastname(searchobj.getFirst_name(), searchobj.getLast_name());
-			System.out.println(list);
+
 		}
 
 		else if (searchobj.getPhysician_name() != null) {
@@ -99,7 +95,7 @@ public class AdminController {
 				list = adminServ.getAllMembers().stream().filter(m -> m.getPhysician_id() == p.get().getPhysician_id())
 						.collect(Collectors.toList());
 			}
-			System.out.println(list);
+
 			return list;
 
 		}
@@ -108,20 +104,18 @@ public class AdminController {
 			Claim c = restTemplate.getForObject("http://claim-service//claim/" + searchobj.getClaimId(), Claim.class);
 
 			Optional<Member> m = adminServ.findMemberById(c.getMemberId());
-			System.out.println(m);
+
 			if (m.isPresent()) {
 				list.add(m.get());
 			}
 		}
 
 		else {
-			System.out.println("Else in search");
-			System.out.println("Second else");
+
 		}
 		return list;
 
 	}
-	
 
 	// fetch claim by claim id
 	@GetMapping("/claim/{claimid}")
@@ -141,6 +135,5 @@ public class AdminController {
 
 		return m;
 	}
-
 
 }

@@ -10,5 +10,4 @@ public interface MemberService {
 
 	Optional<Member> findByUsername(String userName);
 
-	
 }

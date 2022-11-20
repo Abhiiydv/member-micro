@@ -34,7 +34,7 @@ public class AdminServiceImpl implements AdminService {
 	public Member saveMember(Member member) {
 		// TODO Auto-generated method stub
 		// member.setPassword(passwordEncoder.encode(member.getPassword()));
-		System.out.println("adminservice"+member);
+		System.out.println("adminservice" + member);
 		List<Physician> list = physicianRepo.findAll();
 
 		User user = new User();
@@ -86,16 +86,7 @@ public class AdminServiceImpl implements AdminService {
 		// TODO Auto-generated method stub
 		return adminRepo.findMembersbyFirstLastname(first_name, last_name);
 	}
-	/*
-	 * @Override public List<Member> findMembersByPhysicianName(String pName) { //
-	 * TODO Auto-generated method stub Optional<Physician> p =
-	 * physicianRepo.findByName(pName);
-	 * 
-	 * List<Member> list = adminRepo.findAll().stream().filter(m->
-	 * m.getPhysician_id()==p.get().getPhysician_id()).collect(Collectors.toList());
-	 * 
-	 * return list; }
-	 */
+
 	@Override
 	public Optional<Member> findMemberByEmail(String email) {
 		// TODO Auto-generated method stub
@@ -107,11 +98,9 @@ public class AdminServiceImpl implements AdminService {
 	public Boolean ifExistsingMember(String email) {
 		// TODO Auto-generated method stub
 		Member m = adminRepo.findByEmail(email);
-		if(m!=null) {
+		if (m != null) {
 			return true;
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}

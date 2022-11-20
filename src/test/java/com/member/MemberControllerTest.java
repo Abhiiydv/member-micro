@@ -23,31 +23,28 @@ import com.member.service.MemberService;
 @SpringBootTest
 public class MemberControllerTest {
 
-	@Autowired 
+	@Autowired
 	private MemberController memberController;
-	
+
 	@MockBean
 	private MemberService memberService;
-	
-	
-	Member m = new Member((long) 13, "Raghav", "singh", "Raghav123", "123@Raghav", "123@Raghav", "Dwarka",
-			"Delhi", 12, "Delhi", new Date(12 - 12 - 2001), "Raghav@gmail.com", LocalDateTime.now(),
-			LocalDateTime.now());
-	
+
+	Member m = new Member((long) 13, "Raghav", "singh", "Raghav123", "123@Raghav", "123@Raghav", "Dwarka", "Delhi", 12,
+			"Delhi", new Date(12 - 12 - 2001), "Raghav@gmail.com", LocalDateTime.now(), LocalDateTime.now());
+
 	@Test
 	void contextLoads() {
 	}
-	
+
 	@Test
 	public void findByUsername() {
-		
-		 String username="Raghav123";
-		
-		 Optional<Member> o = Optional.ofNullable(m);
-		 
-		 when(memberService.findByUsername(username)).thenReturn(o);
-		 assertEquals("Raghav123", memberController.findMemberByUsername(username).get().getUsername());
+
+		String username = "Raghav123";
+
+		Optional<Member> o = Optional.ofNullable(m);
+
+		when(memberService.findByUsername(username)).thenReturn(o);
+		assertEquals("Raghav123", memberController.findMemberByUsername(username).get().getUsername());
 	}
-	
-	
+
 }

@@ -47,10 +47,10 @@ class MemberServiceApplicationTests {
 
 	@Autowired
 	private MemberService memberService;
-	
+
 	@MockBean
 	private MemberRepository memberRepo;
-	
+
 	@MockBean
 	private UserRepository userRepo;
 
@@ -79,9 +79,8 @@ class MemberServiceApplicationTests {
 	Member m = new Member((long) 11, "Abhishek", "yadav", "Abhishek123", "123@Abhishek", "123@Abhishek", "Dwarka",
 			"Delhi", 12, "Delhi", new Date(12 - 11 - 2001), "Abhsiehkydv99@gmail.com", LocalDateTime.now(),
 			LocalDateTime.now());
-	Member m2 = new Member((long) 12, "Ajeet", "yadav", "Ajeet123", "123@Ajeet", "123@Ajeet", "Dwarka",
-			"Delhi", 12, "Delhi", new Date(12 - 12 - 2001), "Ajay@gmail.com", LocalDateTime.now(),
-			LocalDateTime.now());
+	Member m2 = new Member((long) 12, "Ajeet", "yadav", "Ajeet123", "123@Ajeet", "123@Ajeet", "Dwarka", "Delhi", 12,
+			"Delhi", new Date(12 - 12 - 2001), "Ajay@gmail.com", LocalDateTime.now(), LocalDateTime.now());
 
 	@Test
 	public void saveMember() {
@@ -113,6 +112,42 @@ class MemberServiceApplicationTests {
 	}
 
 	@Test
+	public void getmemberbyEmail() {
+		String email = "Abhsiehkydv99@gmail.com";
+		Optional<Member> op = Optional.ofNullable(m);
+		when(adminrepo.findByEmail(m.getEmail())).thenReturn(m);
+		assertEquals(op, adminService.findMemberByEmail(email));
+
+	}
+
+	@Test
+	public void getmemberbyEmailFailure() {
+		String email = "Abhsiehkydv999@gmail.com";
+		Optional<Member> op = Optional.ofNullable(m);
+		when(adminrepo.findByEmail(m.getEmail())).thenReturn(m);
+		assertEquals(op, adminService.findMemberByEmail(email));
+
+	}
+
+	@Test
+	public void checkIfExistsingMember() {
+		String email = "Abhsiehkydv99@gmail.com";
+		boolean result = true;
+		when(adminrepo.existsByEmail(m.getEmail())).thenReturn(true);
+		assertEquals(false, adminService.ifExistsingMember(email));
+
+	}
+
+	@Test
+	public void checkIfExistsingMemberFailure() {
+		String email = "Abhsiehkydv999@gmail.com";
+		boolean result = true;
+		when(adminrepo.existsByEmail(m.getEmail())).thenReturn(true);
+		assertEquals(false, adminService.ifExistsingMember(email));
+
+	}
+
+	@Test
 	public void getMemberByMemberId() {
 		long mId = 11;
 		Optional<Member> o = Optional.ofNullable(m);
@@ -120,6 +155,7 @@ class MemberServiceApplicationTests {
 		when(adminrepo.findById(mId)).thenReturn(o);
 		assertEquals(o, adminService.findMemberById(mId));
 	}
+
 	@Test
 	public void getMemberByMemberIdFailure() {
 		long mId = 12;
@@ -129,14 +165,24 @@ class MemberServiceApplicationTests {
 		assertEquals(o, adminService.findMemberById(mId));
 	}
 
-	@Test 
+	@Test
 	public void findMemberbyUsername() {
 		String username = "Abhishek123";
 		Optional<Member> o = Optional.ofNullable(m);
-        when(memberService.findByUsername(username)).thenReturn(o);
-        assertEquals(o, memberService.findByUsername(username));
-		
+		when(memberService.findByUsername(username)).thenReturn(o);
+		assertEquals(o, memberService.findByUsername(username));
+
 	}
+
+	@Test
+	public void findMemberbyUsernameFailure() {
+		String username = "Abhishek12345";
+		Optional<Member> o = Optional.ofNullable(m);
+		when(memberService.findByUsername(m.getUsername())).thenReturn(o);
+		assertEquals(o, memberService.findByUsername(username));
+
+	}
+
 	@Test
 	public void fetchAllMembers() {
 
@@ -148,10 +194,11 @@ class MemberServiceApplicationTests {
 		assertEquals(1, adminService.getAllMembers().size());
 
 	}
+
 	@Test
 	public void findMemberByFirstLastName() {
 
-		String firstname="Ajeet", lastname="Yadav";
+		String firstname = "Ajeet", lastname = "Yadav";
 		List<Member> mlist = new ArrayList<Member>();
 
 		mlist.add(m2);
@@ -160,6 +207,7 @@ class MemberServiceApplicationTests {
 		assertEquals(1, adminService.findMembersbyFirstLastname(firstname, lastname).size());
 
 	}
+
 	@Test
 	void contextLoads() {
 	}
@@ -173,7 +221,7 @@ class MemberServiceApplicationTests {
 	}
 
 	Physician p = new Physician(11, "Dr Amit", "UP");
-    
+
 	@Test
 	public void getAllPhsicians() {
 		when(phyRepo.findAll())
@@ -181,10 +229,11 @@ class MemberServiceApplicationTests {
 						.collect(Collectors.toList()));
 		assertEquals(2, physicianServ.fetchAllPhysicians().size());
 	}
+
 	@Test
 	public void getPhysicianByName() {
 		Optional<Physician> o = Optional.of(p);
-		String pname= "Dr Amit";
+		String pname = "Dr Amit";
 		when(phyRepo.findByName(pname)).thenReturn(o);
 		assertEquals(o, physicianServ.findByName(pname));
 	}
